@@ -1,0 +1,9 @@
+.popup__form-title_type__info {
+  padding: 32px 0 18px;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__form-title_type__info {
+    padding: 40px 0 25px;
+  }
+}

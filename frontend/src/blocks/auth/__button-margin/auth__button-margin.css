@@ -1,0 +1,9 @@
+.auth__button-margin {
+  margin-top: 216px;
+}
+
+@media (max-width: 600px) {
+  .auth__button-margin {
+    margin-top: 173px;
+  }
+}

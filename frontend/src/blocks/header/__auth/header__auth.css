@@ -1,0 +1,10 @@
+.header__auth {
+  display: flex;
+}
+
+@media (max-width: 600px) {
+  .header__auth {
+    flex-direction: column;
+    text-align: right;
+  }
+}

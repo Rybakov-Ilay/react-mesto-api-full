@@ -1,0 +1,11 @@
+.auth {
+  margin: 60px auto 0;
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 600px) {
+  .auth__form {
+    margin: 40px auto 0;
+    width: 260px;
+  }
+}
