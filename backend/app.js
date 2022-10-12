@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const mongoose = require('mongoose');
 
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(requestLogger);
+app.use(cors);
 app.use(routes);
 app.use(errorLogger);
 app.use(errors());
