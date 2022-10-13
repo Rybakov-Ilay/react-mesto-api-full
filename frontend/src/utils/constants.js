@@ -7,7 +7,7 @@ export const config = {
   errorClass: "popup__input-error_active",
 };
 
-export const BASE_URL = "https://auth.nomoreparties.co";
+export const BASE_URL = "https://mesto.ilya.nomoredomains.icu";
 
 
 // Селекторы
@@ -22,9 +22,9 @@ export const userData = {
 
 // параметры подключения к api сервера
 export const optionsApi = {
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-41",
+  baseUrl: "https://api.mesto.ilya.nomoredomains.icu",
   headers: {
-    authorization: "62c42d75-3174-484e-a374-431b449090d5",
+    authorization: localStorage.getItem("token"),
     "Content-Type": "application/json",
   },
 };
