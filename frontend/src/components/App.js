@@ -101,15 +101,42 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  // useEffect(() => {
+  //   api
+  //     .getInitialCards()
+  //     .then((data) => {
+  //       setCards(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+  //
+  // useEffect(() => {
+  //   api
+  //       .getUser()
+  //       .then((data) => {
+  //         setCurrentUser({
+  //           name: data.name,
+  //           about: data.about,
+  //           avatar: data.avatar,
+  //           _id: data._id,
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  // }, []);
+
   useEffect(() => {
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    Promise.all([api.getInitialCards(), api.getUser()])
+        .then(([dataCards, dataProfile]) => {
+          setCards(dataCards);
+          setCurrentUser(dataProfile);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   }, []);
 
   function handleAddPlace(card) {
@@ -126,21 +153,7 @@ function App() {
       .finally(() => setRenderLoading(false));
   }
 
-  useEffect(() => {
-    api
-      .getUser()
-      .then((data) => {
-        setCurrentUser({
-          name: data.name,
-          about: data.about,
-          avatar: data.avatar,
-          _id: data._id,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
