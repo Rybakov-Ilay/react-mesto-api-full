@@ -24,7 +24,7 @@ export const userData = {
 export const optionsApi = {
   baseUrl: "https://api.mesto.ilya.nomoredomains.icu",
   headers: {
-    authorization: localStorage.getItem("token"),
+    // authorization: localStorage.getItem("token"),
     "Content-Type": "application/json",
   },
 };

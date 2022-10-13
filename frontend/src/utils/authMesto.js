@@ -9,6 +9,7 @@ const getResponseData = (res) => {
 
 const parametersForAuthorization = (password, email) => {
   return {
+    credentials: 'include',
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -33,10 +34,11 @@ export const authorize = (password, email) => {
 
 export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
+    credentials: 'include',
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      // Authorization: `Bearer ${token}`,
     },
   }).then((res) => getResponseData(res));
 };

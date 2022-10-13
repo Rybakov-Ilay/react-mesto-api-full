@@ -14,7 +14,7 @@ class Api {
   }
 
   getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, { headers: this._headers }).then(
+    return fetch(`${this._baseUrl}/cards`, { headers: this._headers, credentials: 'include', }).then(
       (res) => {
         return this._getResponseData(res);
       }
@@ -25,6 +25,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         name: card.name,
         link: card.link,
@@ -37,6 +38,7 @@ class Api {
   getUser() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
+      credentials: 'include',
     }).then((res) => {
       return this._getResponseData(res);
     });
@@ -46,6 +48,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         name: userData.name,
         about: userData.about,
@@ -58,6 +61,7 @@ class Api {
   deleteCard(cardID) {
     return fetch(`${this._baseUrl}/cards/${cardID}`, {
       method: "DELETE",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => {
       return this._getResponseData(res);
@@ -67,6 +71,7 @@ class Api {
   editAvatar(link) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
+      credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
         avatar: link,
@@ -79,6 +84,7 @@ class Api {
   putLike(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => {
       return this._getResponseData(res);
@@ -88,6 +94,7 @@ class Api {
   deleteLike(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
+      credentials: 'include',
       headers: this._headers,
     }).then((res) => {
       return this._getResponseData(res);
@@ -98,6 +105,7 @@ class Api {
     if (isLiked) {
       return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
         method: "DELETE",
+        credentials: 'include',
         headers: this._headers,
       }).then((res) => {
         return this._getResponseData(res);
@@ -105,6 +113,7 @@ class Api {
     } else {
       return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
         method: "PUT",
+        credentials: 'include',
         headers: this._headers,
       }).then((res) => {
         return this._getResponseData(res);

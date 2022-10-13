@@ -8,6 +8,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const { NotFoundError } = require('../erorrs/NotFoundError');
 const { BadRequestError } = require('../erorrs/BadRequestError');
 const { ConflictError } = require('../erorrs/ConflictError');
+const Domain = require("domain");
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -65,13 +66,13 @@ module.exports.login = (req, res, next) => {
         { expiresIn: '7d' },
       );
 
-      // res.cookie('jwt', token, {
-      //   maxAge: 3600000 * 24 * 7,
-      //   httpOnly: true,
-      //   sameSite: true,
-      // });
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: true,
+      }, 'Domain=mesto.ilya.nomoredomains.icu');
 
-      return res.send({ token });
+      return res.send({ token: req.cookies.jwt });
     })
     .catch(next);
 };
