@@ -71,7 +71,7 @@ module.exports.login = (req, res, next) => {
       //   sameSite: true,
       // });
 
-      return res.send(token);
+      return res.send({ token });
     })
     .catch(next);
 };
