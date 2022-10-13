@@ -7,7 +7,7 @@ export const config = {
   errorClass: "popup__input-error_active",
 };
 
-export const BASE_URL = "https://mesto.ilya.nomoredomains.icu";
+export const BASE_URL = "https://api.mesto.ilya.nomoredomains.icu";
 
 
 // Селекторы
