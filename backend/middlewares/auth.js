@@ -3,13 +3,13 @@ const jwt = require('jsonwebtoken');
 const { UnauthorizedError } = require('../erorrs/UnauthorizedError');
 
 module.exports = (req, res, next) => { // eslint-disable-line
-  // const { authorization } = req.headers;
-  // if (!authorization || !authorization.startsWith('Bearer ')) {
-  //   return next(new UnauthorizedError('Необходима авторизация'));
-  // }
-  // const token = authorization.replace('Bearer ', '');
+  const { authorization } = req.headers;
+  if (!authorization || !authorization.startsWith('Bearer ')) {
+    return next(new UnauthorizedError('Необходима авторизация'));
+  }
+  const token = authorization.replace('Bearer ', '');
 
-  const token = req.cookies.jwt;
+  // const token = req.cookies.jwt;
 
   if (!token) {
     return next(new UnauthorizedError('Необходима авторизация')); // eslint-disable-line
