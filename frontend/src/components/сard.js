@@ -9,7 +9,7 @@ function Card({ card, handleClick, onCardLike, onCardDelete }) {
   }`;
   const isLiked = card.likes.some((i) => i._id === currentUser._id);
   console.log(`isLiked в компоненте ${isLiked}`);
-  card.likes.forEach(e => console.log(`e._id = ${e._id}`));
+  card.likes.forEach(e => console.log(`e = ${e}`));
   console.log(`currentUser._id в компоненте ${currentUser._id}`);
   const cardLikeButtonClassName = `card__button-like ${
     isLiked ? "card__button-like_active" : ""
