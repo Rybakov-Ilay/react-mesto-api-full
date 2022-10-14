@@ -11,15 +11,14 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import api from "../utils/Api";
 import * as authMesto from "../utils/authMesto";
-import {CurrentUserContext} from "../contexts/CurrentUserContext";
-import {Route, Switch, useHistory} from "react-router-dom";
-import {logout} from "../utils/authMesto";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { Route, Switch, useHistory } from "react-router-dom";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState({name: '', about: '', email: ''});
+    const [currentUser, setCurrentUser] = useState({});
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -28,11 +27,11 @@ function App() {
     const [cards, setCards] = useState([]);
     const [renderLoading, setRenderLoading] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
-    // const [emailCurrentUser, setEmailCurrentUser] = useState("Test");
+    const [emailCurrentUser, setEmailCurrentUser] = useState("Test");
     const [isSingUp, setIsSingUp] = useState(false);
     const history = useHistory();
 
-    function handelSubmitSingUp({password, email}) {
+    function handelSubmitSingUp({ password, email }) {
         authMesto
             .register(password, email)
             .then(() => {
@@ -45,12 +44,13 @@ function App() {
             .finally(() => setIsInfoTooltipPopupOpen(true));
     }
 
-    function handelSubmitLogin({password, email}) {
-        // localStorage.setItem("email", email);
+    function handelSubmitLogin({ password, email }) {
+        localStorage.setItem("email", email);
         authMesto
             .authorize(password, email)
             .then((res) => {
-                // localStorage.setItem("token", res.token);
+                console.log(res);
+                localStorage.setItem("token", res.token);
                 setLoggedIn(true);
                 history.push("/");
             })
@@ -61,22 +61,22 @@ function App() {
     }
 
     useEffect(() => {
-        authMesto
-            .checkToken()
-            .then((res) => {
-                console.log(`Смотри сюда:    ${res}`);
-                setCurrentUser(res);
-                setLoggedIn(true);
-                history.push("/");
-            })
-            .catch((err) => console.log(err));
+        if (localStorage.getItem("token")) {
+            const token = localStorage.getItem("token");
+            authMesto
+                .checkToken(token)
+                .then((res) => {
+                    setEmailCurrentUser(res.data.email);
+                    setLoggedIn(true);
+                    history.push("/");
+                })
+                .catch((err) => console.log(err));
+        }
     }, [loggedIn]);
 
     function handleSingOut() {
-        // localStorage.removeItem("token");
-        logout();
-        setCurrentUser({name: '', about: '', email: ''});
-        history.push('/sign-in');
+        localStorage.removeItem("token");
+        setEmailCurrentUser("");
         setLoggedIn(false);
     }
 
@@ -103,13 +103,13 @@ function App() {
     }
 
     useEffect(() => {
-        Promise.all([api.getInitialCards(), api.getUser()])
-            .then(([dataCards, dataProfile]) => {
-                setCards(dataCards);
-                setCurrentUser(dataProfile);
+        api
+            .getInitialCards()
+            .then((data) => {
+                setCards(data);
             })
-            .catch((error) => {
-                console.log(error);
+            .catch((err) => {
+                console.log(err);
             });
     }, []);
 
@@ -127,6 +127,21 @@ function App() {
             .finally(() => setRenderLoading(false));
     }
 
+    useEffect(() => {
+        api
+            .getUser()
+            .then((data) => {
+                setCurrentUser({
+                    name: data.name,
+                    about: data.about,
+                    avatar: data.avatar,
+                    _id: data._id,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -196,7 +211,7 @@ function App() {
                 <div className="page">
                     <Header
                         loggedIn={loggedIn}
-                        emailCurrentUser={currentUser.email}
+                        emailCurrentUser={emailCurrentUser}
                         onSingOut={handleSingOut}
                     />
                     <Switch>
@@ -233,7 +248,7 @@ function App() {
                             />
                         </Route>
                     </Switch>
-                    <Footer/>
+                    <Footer />
                 </div>
                 <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}
@@ -264,7 +279,7 @@ function App() {
                     onClose={closeAllPopups}
                     isSingUp={isSingUp}
                 />
-                <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+                <ImagePopup card={selectedCard} onClose={closeAllPopups} />
             </CurrentUserContext.Provider>
         </div>
     );
