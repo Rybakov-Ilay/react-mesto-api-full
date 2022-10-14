@@ -11,11 +11,11 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import api from "../utils/Api";
 import * as authMesto from "../utils/authMesto";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { Route, Switch, useHistory } from "react-router-dom";
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import {Route, Switch, useHistory} from "react-router-dom";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({});
@@ -31,7 +31,7 @@ function App() {
     const [isSingUp, setIsSingUp] = useState(false);
     const history = useHistory();
 
-    function handelSubmitSingUp({ password, email }) {
+    function handelSubmitSingUp({password, email}) {
         authMesto
             .register(password, email)
             .then(() => {
@@ -44,7 +44,7 @@ function App() {
             .finally(() => setIsInfoTooltipPopupOpen(true));
     }
 
-    function handelSubmitLogin({ password, email }) {
+    function handelSubmitLogin({password, email}) {
         localStorage.setItem("email", email);
         authMesto
             .authorize(password, email)
@@ -66,7 +66,7 @@ function App() {
             authMesto
                 .checkToken(token)
                 .then((res) => {
-                    console.log(`LOOK HEAR: ${res}`);
+                    console.log(`LOOK HEAR: ${res.email}, ${res._id}`);
                     setEmailCurrentUser(res.email);
                     setLoggedIn(true);
                     history.push("/");
@@ -82,13 +82,19 @@ function App() {
     }
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some((i) => i._id === currentUser._id);
+        const isLiked = card.likes.some((i) => {
+            console.log(`i._id = ${i._id}, currentUser._id = ${currentUser._id}\n isLiked = ${isLiked}`);
+            return i._id === currentUser._id;
+        });
+
 
         api
             .changeLikeCardStatus(card._id, isLiked)
             .then((newCard) => {
-                setCards((state) =>
-                    state.map((c) => (c._id === card._id ? newCard : c))
+                setCards((state) => {
+                        console.log(`state = ${state}`);
+                        state.map((c) => (c._id === card._id ? newCard : c));
+                    }
                 );
             })
             .catch((err) => console.log(err));
@@ -249,7 +255,7 @@ function App() {
                             />
                         </Route>
                     </Switch>
-                    <Footer />
+                    <Footer/>
                 </div>
                 <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}
@@ -280,7 +286,7 @@ function App() {
                     onClose={closeAllPopups}
                     isSingUp={isSingUp}
                 />
-                <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+                <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
             </CurrentUserContext.Provider>
         </div>
     );
