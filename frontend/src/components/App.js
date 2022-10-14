@@ -16,6 +16,7 @@ import api from "../utils/Api";
 import * as authMesto from "../utils/authMesto";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import {Route, Switch, useHistory} from "react-router-dom";
+import {logout} from "../utils/authMesto";
 
 function App() {
     const [currentUser, setCurrentUser] = useState({name: '', about: '', email: ''});
@@ -73,7 +74,9 @@ function App() {
 
     function handleSingOut() {
         // localStorage.removeItem("token");
+        logout();
         setCurrentUser({name: '', about: '', email: ''});
+        history.push('/sign-in');
         setLoggedIn(false);
     }
 
