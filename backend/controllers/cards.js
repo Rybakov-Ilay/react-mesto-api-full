@@ -31,7 +31,7 @@ module.exports.deleteCard = (req, res, next) => {
     }
     if (req.user._id === card.owner._id.toString()) {
       Card.findByIdAndRemove(card._id.toString())
-        .then((card) => res.send({ card })) // eslint-disable-line
+        .then((card) => res.send(card)) // eslint-disable-line
         .catch((err) => {
           err.name === 'CastError' // eslint-disable-line
             ? next(new BadRequestError('Переданы некорректные данные'))
@@ -53,7 +53,7 @@ module.exports.likeCard = (req, res, next) => {
     .then((card) => {
       !card // eslint-disable-line
         ? next(new NotFoundError('Карточка по указанному _id не найдена'))
-        : res.send({ data: card });
+        : res.send(card);
     })
     .catch((err) => {
       err.name === 'CastError' // eslint-disable-line
@@ -71,7 +71,7 @@ module.exports.dislikeCard = (req, res, next) => {
     .then((card) => {
       !card // eslint-disable-line
         ? next(new NotFoundError('Карточка по указанному _id не найдена'))
-        : res.send({ data: card });
+        : res.send(card);
     })
     .catch((err) => {
       err.name === 'CastError' // eslint-disable-line
