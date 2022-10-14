@@ -8,7 +8,7 @@ function Card({ card, handleClick, onCardLike, onCardDelete }) {
   const cardDeleteButtonClassName = `card__trash ${
     isOwn ? "" : "card__trash_hidden"
   }`;
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  const isLiked = card.likes.some((i) => i === currentUser._id);
   console.log(`isLiked в компоненте ${isLiked}`);
   card.likes.forEach(e => console.log(`e = ${e}`));
   console.log(`currentUser._id в компоненте ${currentUser._id}`);
