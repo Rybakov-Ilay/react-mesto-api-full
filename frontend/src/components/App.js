@@ -66,7 +66,7 @@ function App() {
             authMesto
                 .checkToken(token)
                 .then((res) => {
-                    console.log(`LOOK HEAR: ${res}`)
+                    console.log(`LOOK HEAR: ${res}`);
                     setEmailCurrentUser(res.email);
                     setLoggedIn(true);
                     history.push("/");
