@@ -6,7 +6,7 @@ const { ForbiddenError } = require('../erorrs/ForbiddenError');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next); // eslint-disable-line
 };
 
@@ -15,7 +15,7 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch((err) => {
       err.name === 'ValidationError' // eslint-disable-line
         ? next(new BadRequestError('Переданы некорректные данные'))

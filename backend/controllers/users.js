@@ -8,7 +8,6 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const { NotFoundError } = require('../erorrs/NotFoundError');
 const { BadRequestError } = require('../erorrs/BadRequestError');
 const { ConflictError } = require('../erorrs/ConflictError');
-const Domain = require("domain");
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -21,7 +20,7 @@ module.exports.getUser = (req, res, next) => {
     .then((user) => {
       !user // eslint-disable-line
         ? next(new NotFoundError('Пользователь по указанному _id не найден'))
-        : res.send({ data: user });
+        : res.send(user);
     })
     .catch((err) => {
       err.name === 'CastError' // eslint-disable-line
@@ -70,9 +69,7 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         sameSite: true,
-      }, 'Domain=mesto.ilya.nomoredomains.icu');
-
-      return res.send({ token: req.cookies.jwt });
+      }, 'Domain=mesto.ilya.nomoredomains.icu').send({ token: req.cookies.jwt });
     })
     .catch(next);
 };
@@ -90,7 +87,7 @@ module.exports.updateProfile = (req, res, next) => {
     { name: name, about: about }, // eslint-disable-line
     { new: true, runValidators: true },
   )
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       err.name === 'ValidationError' // eslint-disable-line
         ? next(new BadRequestError('Переданы некорректные данные'))
@@ -107,7 +104,7 @@ module.exports.updateAvatar = (req, res, next) => {
     { avatar: avatar }, // eslint-disable-line
     { new: true, runValidators: true } // eslint-disable-line
   )
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       err.name === 'ValidationError' // eslint-disable-line
         ? next(new BadRequestError('Переданы некорректные данные'))
@@ -120,7 +117,7 @@ module.exports.getCurrentUser = (req, res, next) => {
     .then((user) => {
       !user // eslint-disable-line
         ? next(new NotFoundError('Пользователь с указанным _id не найден'))
-        : res.send({ data: user });
+        : res.send(user);
     })
     .catch((err) => {
       err.name === 'CastError' // eslint-disable-line
