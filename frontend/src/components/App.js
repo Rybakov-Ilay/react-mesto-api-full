@@ -49,10 +49,19 @@ function App() {
         authMesto
             .authorize(password, email)
             .then((res) => {
-                console.log(res);
-                localStorage.setItem("token", res.token);
-                setLoggedIn(true);
-                history.push("/");
+                if (res) {
+                    Promise.all([api.getInitialCards(), api.getUser()])
+                        .then(([dataCards, dataProfile]) => {
+                            setCards(dataCards);
+                            setCurrentUser(dataProfile);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                    localStorage.setItem("token", res.token);
+                    setLoggedIn(true);
+                    history.push("/");
+                }
             })
             .catch((err) => {
                 setIsInfoTooltipPopupOpen(true);
