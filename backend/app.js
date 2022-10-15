@@ -3,11 +3,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
 
 const mongoose = require('mongoose');
 
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 const routes = require('./routes/index');
 const defaultErrorHandler = require('./erorrs/DefaultErorr');
 

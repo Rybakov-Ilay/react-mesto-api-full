@@ -9,6 +9,11 @@ const {
   validateUserBody,
 } = require('../utils/validations');
 
+router.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 router.post('/signin', validateUserBody, login);
 router.post('/signup', validateAuthentication, createUser);
 router.get('/signout', logout);
