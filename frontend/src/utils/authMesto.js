@@ -32,24 +32,12 @@ export const authorize = (password, email) => {
     ).then((res) => getResponseData(res));
 };
 
-// export const logout = () => {
-//     return fetch(
-//         `${BASE_URL}/signout`, {
-//             credentials: 'include',
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//         }).then((res) => getResponseData(res));
-// };
-
 export const checkToken = (token) => {
     return fetch(`${BASE_URL}/users/me`, {
         credentials: 'include',
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            // Authorization: `Bearer ${token}`,
         },
     }).then((res) => getResponseData(res));
 };
